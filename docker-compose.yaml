@@ -1,0 +1,87 @@
+version: '3.8'
+services:
+  products:
+    container_name: products
+    build: ./products
+    volumes:
+      - ./products/code:/usr/src/app
+    networks:
+      - products
+    ports:
+      - "3001:3001"
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm run dev"
+
+  cart:
+    container_name: shoppingCart
+    build: ./cart
+    volumes:
+      - ./cart/code:/usr/src/app
+    networks:
+      - cart
+    ports:
+      - "3002:3002"
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm run dev"
+
+  drivers:
+    container_name: drivers
+    build: ./driver
+    volumes:
+      - ./driver/code:/usr/src/app
+    networks:
+      - cart
+    ports:
+      - "3003:3003"
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm run dev"
+
+  farmers:
+    container_name: farmers
+    build: ./farmer
+    volumes:
+      - ./farmer/code:/usr/src/app
+    networks:
+      - cart
+    ports:
+      - "3005:3005"
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm run dev"
+
+  admin:
+    container_name: admin
+    build: ./users
+    volumes:
+      - ./users/code:/usr/src/app
+    networks:
+      - cart
+    ports:
+      - "3004:3004"
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm run dev"
+
+  event:
+    container_name: event
+    build: ./event
+    volumes:
+      - ./event/code:/usr/src/app
+    networks:
+      - cart
+    ports:
+      - "3006:3006"
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm run dev"
+
+networks:
+  products:
+    driver: bridge
+  cart:
+    driver: bridge
+  driver:
+    driver: bridge
+  admin:
+    driver: bridge
+  farmer:
+    driver: bridge
+  event:
+    driver: bridge
